@@ -136,7 +136,7 @@ module INC #(parameter DATAWIDTH = 4)(a, d);
             d <= 0;
         else
             d <= a + 1;*/
-        d <= 1 + 1;
+        d <= a + 1;
     end
 endmodule
 
