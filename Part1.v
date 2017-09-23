@@ -67,7 +67,7 @@ endmodule
 // COMPARE
 module COMP #(parameter DATAWIDTH = 4)(A, B, gt, lt, eq);
 	input      [DATAWIDTH-1:0] A, B;
-	output reg [DATAWIDTH-1:0] gt, lt, eq;
+	output reg                 gt, lt, eq;
 
 	always @(A,B) begin
 		gt <= 0; lt <= 0; eq <= 0;
@@ -104,7 +104,7 @@ module SHR #(parameter DATAWIDTH = 4)(A, Sh_amt, CLK, Rst, D);
 	reg        [DATAWIDTH-1:0] i;
 
 	always @(posedge CLK) begin
-		if (Rst == 1 || Sh_amt >= DATAWIDTH || ~Sh_amt)
+		if (Rst == 1)
 			D<=0;
 		else
 			D<= A >> Sh_amt;
@@ -119,7 +119,7 @@ module SHL #(parameter DATAWIDTH = 4)(A, Sh_amt, CLK, Rst, D);
 	reg        [DATAWIDTH-1:0] i;
 
 	always @(posedge CLK) begin
-		if (Rst == 1 || Sh_amt >= DATAWIDTH || ~Sh_amt)
+		if (Rst == 1)
 			D<=0;
 		else 
 			D<= A << Sh_amt;
@@ -132,10 +132,11 @@ module INC #(parameter DATAWIDTH = 4)(a, d);
     output reg [DATAWIDTH-1:0] d;
     
     always @(a) begin
-       if(a[DATAWIDTH-1:0] == 1'b1)
-           d[DATAWIDTH-1:0] <= 1'b0;    // wrap around ex. 1111 -> 0000
-       else
-           d <= a + 1;
+        /*if (a == {DATAWIDTH{1'b1}})
+            d <= 0;
+        else
+            d <= a + 1;*/
+        d <= 1 + 1;
     end
 endmodule
 
@@ -145,9 +146,10 @@ module DEC #(parameter DATAWIDTH = 4)(a, d);
     output reg [DATAWIDTH-1:0] d;
     
     always @(a) begin
-       if(a[DATAWIDTH-1:0] == 1'b0)
-           d[DATAWIDTH-1:0] <= 1'b1;    // wrap around  ex. 0000 -> 1111
-       else
-           d <= a - 1;
+        /*if (a == 0)
+            d <= {DATAWIDTH{1'b1}};
+        else
+            d <= a - 1;*/
+       d <= a - 1;
     end
 endmodule
