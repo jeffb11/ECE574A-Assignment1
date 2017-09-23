@@ -97,32 +97,22 @@ module MUX2x1 #(parameter DATAWIDTH = 4)(A, B, Sel, D);
 endmodule
 
 // SHIFT RIGHT REG
-module SHR #(parameter DATAWIDTH = 4)(A, Sh_amt, CLK, Rst, D);
+module SHR #(parameter DATAWIDTH = 4)(A, Sh_amt, D);
 	input      [DATAWIDTH-1:0] A, Sh_amt;
-	input                      CLK, Rst;
 	output reg [DATAWIDTH-1:0] D;
-	reg        [DATAWIDTH-1:0] i;
 
-	always @(posedge CLK) begin
-		if (Rst == 1)
-			D<=0;
-		else
-			D<= A >> Sh_amt;
+	always @(A, Sh_amt) begin
+		D<= A >> Sh_amt;
 	end
 endmodule
 
 // SHIFT LEFT REG
-module SHL #(parameter DATAWIDTH = 4)(A, Sh_amt, CLK, Rst, D);
+module SHL #(parameter DATAWIDTH = 4)(A, Sh_amt, D);
 	input      [DATAWIDTH-1:0] A, Sh_amt;
-	input                      CLK, Rst;
 	output reg [DATAWIDTH-1:0] D;
-	reg        [DATAWIDTH-1:0] i;
 
-	always @(posedge CLK) begin
-		if (Rst == 1)
-			D<=0;
-		else 
-			D<= A << Sh_amt;
+	always @(A, Sh_amt) begin
+		D<= A << Sh_amt;
 	end
 endmodule
 
