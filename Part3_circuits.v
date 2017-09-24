@@ -89,7 +89,7 @@ module circuit4(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, final, clk, rst)
     ADD#(32) Add_13(o, t12, t13);   // t13 = t12 + o
     ADD#(32) Add_14(p, t13, t14);   // t14 = t13 + p
     REG#(32) Reg_1(t14, final, clk, rst);    // final = t14
-endmodule;
+endmodule
 
 module circuit5(a, b, c, z, x, clk, rst);
     input[63:0] a, b, c;
@@ -117,7 +117,7 @@ module circuit5(a, b, c, z, x, clk, rst);
     SHR#(64) Shr_1(greg, dEQe, zrin);       // zrin = greg >> dEQe
     REG#(64) Reg_3(xrin, x, clk, rst);      // x = xrin
     REG#(64) Reg_4(zrin, z, clk, rst);      // z = zrin
-endmodule;
+endmodule
 
 module circuit6(a, b, c, d, e, f, g, h, num, avg, clk, rst);
     input[15:0] a, b, c, d, e, f, g, h, num;
@@ -146,7 +146,7 @@ module circuit6(a, b, c, d, e, f, g, h, num, avg, clk, rst);
     REG#(32) Reg_7(t7, r7, clk, rst);   // r7 = t7
     DIV#(32) Div_1(r7, num, avgwire);   // avgwire = r7 / num
     REG#(16) Reg_8(avgwire, avg, clk, rst); // avg = avgwire
-endmodule;
+endmodule
 
 module circuit7(a, b, c, d, zero, z, clk, rst);
     input[63:0] a, b, c, d, zero;
@@ -162,7 +162,7 @@ module circuit7(a, b, c, d, zero, z, clk, rst);
     COMP#(64) Comp_1(g, zero, gt, lt, gEQz);    // gEQz = g == zero
     MUX2x1#(64) Mux_1(f, e, gEQz, zwire);       // zwire = gEQz ? e : f 
     REG#(64) Reg_1(zwire, z, clk, rst);         // z = zwire
-endmodule;
+endmodule
 
 module circuit8(a, b, c, zero, z, clk, rst);
     input[63:0] a, b, c, zero;
@@ -172,10 +172,10 @@ module circuit8(a, b, c, zero, z, clk, rst);
     wire[63:0] e, f, g, zwire;
     wire gEQz, gt, lt;
     
-    SUB#(64) Sub_1(a, 1, e);    // e = a - 1
-    ADD#(64) Add_1(c, 1, f);    // f = c + 1
-    DIV#(64) Div_1(a, c, g);    // g = a % c  
+    DEC#(64) Dec_1(a, e);    // e = a - 1
+    INC#(64) Inc_1(c, f);    // f = c + 1
+    MOD#(64) Mod_1(a, c, g); // g = a % c
     COMP#(64) Comp_1(g, zero, gt, lt, gEQz);    // gEQz = g == zero
     MUX2x1#(64) Mux_1(f, e, gEQz, zwire);       // zwire = gEQz ? e : f 
     REG#(64) Reg_1(zwire, z, clk, rst);         // z = zwire
-endmodule;
+endmodule
