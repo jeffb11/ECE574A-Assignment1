@@ -29,13 +29,13 @@ module circuit2(a, b, c, z, x, clk, rst);
     wire[31:0] d, e, f, g, h;
     wire[31:0] zwire, xwire;
     wire dLTe, dEQe;
-    wire gt, lt, eq;
+    wire gt1, gt2, lt, eq;
     
     ADD#(32) Adder_1(a, b, d);              // d = a + b
     ADD#(32) Adder_2(a, c, e);              // e = a + c
     SUB#(32) Sub_1(a, b, f);                // f = a - b  
-    COMP#(32) Comp_1(d, e, gt, lt, dEQe);   // dEQe = d == e
-    COMP#(32) Comp_2(d, e, gt, dLTe, eq);   // dLTe = d < e
+    COMP#(32) Comp_1(d, e, gt1, lt, dEQe);   // dEQe = d == e
+    COMP#(32) Comp_2(d, e, gt2, dLTe, eq);   // dLTe = d < e
     MUX2x1#(32) Mux_1(e, d, dLTe, g);       // g = dLTe ? d : e 
     MUX2x1#(32) Mux_2(f, g, dEQe, h);       // h = dEQe ? g : f 
     SHL#(32) Shl_1(g, dLTe, xwire);         // xwire = g << dLTe
@@ -100,21 +100,21 @@ module circuit5(a, b, c, z, x, clk, rst);
     wire[63:0] d, e, f, g, h;
     wire dLTe, dEQe;
     wire[63:0] xrin, zrin;
-    wire gt, lt, eq;
+    wire gt1, gt2, lt, eq;
     
-    reg[63:0] greg, hreg;
+    wire[63:0] grego, hrego;
     
     ADD#(64) Add_1(b, a, d);                // d = a + b
     ADD#(64) Add_2(c, a, e);                // e = a + c
     SUB#(64) Sub_1(a, b, f);                // f = a - b  
-    COMP#(64) Comp_1(d, e, gt, lt, dEQe);   // dEQe = d == e
-    COMP#(64) Comp_2(d, e, gt, dLTe, eq);   // dLTe = d < e
+    COMP#(64) Comp_1(d, e, gt1, lt, dEQe);   // dEQe = d == e
+    COMP#(64) Comp_2(d, e, gt2, dLTe, eq);   // dLTe = d < e
     MUX2x1#(64) Mux_1(e, d, dLTe, g);       // g = dLTe ? d : e 
     MUX2x1#(64) Mux_2(f, g, dEQe, h);       // h = dEQe ? g : f 
-    REG#(64) Reg_1(g, greg, clk, rst);      // greg = g
-    REG#(64) Reg_2(h, hreg, clk, rst);      // hreg = h
-    SHL#(64) Shl_1(hreg, dLTe, xrin);       // xrin = hreg << dLTe
-    SHR#(64) Shr_1(greg, dEQe, zrin);       // zrin = greg >> dEQe
+    REG#(64) greg(g, grego, clk, rst);      // greg = g
+    REG#(64) hreg(h, hrego, clk, rst);      // hreg = h
+    SHL#(64) Shl_1(hrego, dLTe, xrin);       // xrin = hreg << dLTe
+    SHR#(64) Shr_1(grego, dEQe, zrin);       // zrin = greg >> dEQe
     REG#(64) Reg_3(xrin, x, clk, rst);      // x = xrin
     REG#(64) Reg_4(zrin, z, clk, rst);      // z = zrin
 endmodule
@@ -125,27 +125,26 @@ module circuit6(a, b, c, d, e, f, g, h, num, avg, clk, rst);
     
     output[15:0] avg;
     
-    reg[15:0] r1, r2, r3, r4, r5, r6, r7;
-    
     wire[15:0] avgwire;
     wire[31:0] t1, t2, t3, t4, t5, t6, t7;
+    wire[31:0] ro1, ro2, ro3, ro4, ro5, ro6, ro7;
     
     ADD#(32) Add_1(a, b, t1);           // t1 = a + b
-    REG#(32) Reg_1(t1, r1, clk, rst);   // r1 = t1
-    ADD#(32) Add_2(r1, c, t2);          // t2 = r1 + c 
-    REG#(32) Reg_2(t2, r2, clk, rst);   // r2 = t2
-    ADD#(32) Add_3(r2, d, t3);          // t3 = r2 + d 
-    REG#(32) Reg_3(t3, r3, clk, rst);   // r3 = t3
-    ADD#(32) Add_4(r3, e, t4);          // t4 = r3 + e 
-    REG#(32) Reg_4(t4, r4, clk, rst);   // r4 = t4
-    ADD#(32) Add_5(r4, f, t5);          // t5 = r4 + f 
-    REG#(32) Reg_5(t5, r5, clk, rst);   // r5 = t5
-    ADD#(32) Add_6(r5, g, t6);          // t6 = r5 + g 
-    REG#(32) Reg_6(t6, r6, clk, rst);   // r6 = t6
-    ADD#(32) Add_7(r6, h, t7);          // t7 = r6 + h 
-    REG#(32) Reg_7(t7, r7, clk, rst);   // r7 = t7
-    DIV#(32) Div_1(r7, num, avgwire);   // avgwire = r7 / num
-    REG#(16) Reg_8(avgwire, avg, clk, rst); // avg = avgwire
+    REG#(32) r1(t1, ro1, clk, rst);   // r1 = t1
+    ADD#(32) Add_2(ro1, c, t2);          // t2 = r1 + c 
+    REG#(32) r2(t2, ro2, clk, rst);   // r2 = t2
+    ADD#(32) Add_3(ro2, d, t3);          // t3 = r2 + d 
+    REG#(32) r3(t3, ro3, clk, rst);   // r3 = t3
+    ADD#(32) Add_4(ro3, e, t4);          // t4 = r3 + e 
+    REG#(32) r4(t4, ro4, clk, rst);   // r4 = t4
+    ADD#(32) Add_5(ro4, f, t5);          // t5 = r4 + f 
+    REG#(32) r5(t5, ro5, clk, rst);   // r5 = t5
+    ADD#(32) Add_6(ro5, g, t6);          // t6 = r5 + g 
+    REG#(32) r6(t6, ro6, clk, rst);   // r6 = t6
+    ADD#(32) Add_7(ro6, h, t7);          // t7 = r6 + h 
+    REG#(32) r7(t7, ro7, clk, rst);   // r7 = t7
+    DIV#(32) Div_1(ro7, num, avgwire);   // avgwire = r7 / num
+    REG#(16) Reg_8(avgwire[15:0], avg, clk, rst); // avg = avgwire
 endmodule
 
 module circuit7(a, b, c, d, zero, z, clk, rst);
