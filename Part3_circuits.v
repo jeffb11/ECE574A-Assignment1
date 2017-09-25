@@ -29,13 +29,12 @@ module circuit2(a, b, c, z, x, clk, rst);
     wire[31:0] d, e, f, g, h;
     wire[31:0] zwire, xwire;
     wire dLTe, dEQe;
-    wire gt1, gt2, lt, eq;
+    wire gt, lt, eq;
     
     ADD#(32) Adder_1(a, b, d);              // d = a + b
     ADD#(32) Adder_2(a, c, e);              // e = a + c
     SUB#(32) Sub_1(a, b, f);                // f = a - b  
-    COMP#(32) Comp_1(d, e, gt1, lt, dEQe);   // dEQe = d == e
-    COMP#(32) Comp_2(d, e, gt2, dLTe, eq);   // dLTe = d < e
+    COMP#(32) Comp_1(d, e, gt, dLTe, dEQe);   // dEQe = d == e, dLTe = d < e
     MUX2x1#(32) Mux_1(e, d, dLTe, g);       // g = dLTe ? d : e 
     MUX2x1#(32) Mux_2(f, g, dEQe, h);       // h = dEQe ? g : f 
     SHL#(32) Shl_1(g, dLTe, xwire);         // xwire = g << dLTe
@@ -100,15 +99,14 @@ module circuit5(a, b, c, z, x, clk, rst);
     wire[63:0] d, e, f, g, h;
     wire dLTe, dEQe;
     wire[63:0] xrin, zrin;
-    wire gt1, gt2, lt, eq;
+    wire gt, lt, eq;
     
     wire[63:0] grego, hrego;
     
     ADD#(64) Add_1(b, a, d);                // d = a + b
     ADD#(64) Add_2(c, a, e);                // e = a + c
     SUB#(64) Sub_1(a, b, f);                // f = a - b  
-    COMP#(64) Comp_1(d, e, gt1, lt, dEQe);   // dEQe = d == e
-    COMP#(64) Comp_2(d, e, gt2, dLTe, eq);   // dLTe = d < e
+    COMP#(64) Comp_1(d, e, gt, dLTe, dEQe);   // dEQe = d == e, dLTe = d < e
     MUX2x1#(64) Mux_1(e, d, dLTe, g);       // g = dLTe ? d : e 
     MUX2x1#(64) Mux_2(f, g, dEQe, h);       // h = dEQe ? g : f 
     REG#(64) greg(g, grego, clk, rst);      // greg = g
