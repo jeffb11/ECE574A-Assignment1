@@ -1,5 +1,5 @@
-Circuit1 : ? 9.714
-Circuit2 : ? 9.876
+Circuit1 : 21.590 9.714
+Circuit2 : 64.741 9.876
 Circuit3 : ? 4.104
 Circuit4 : ? 27.254
 Circuit5 : ? 11.523
