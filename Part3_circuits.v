@@ -14,7 +14,7 @@ module circuit1(a, b, c, z, x, clk, rst);
     ADD#(8) Adder_1(a, b, d);           // d = a + b
     ADD#(8) Adder_2(a, c, e);           // e = a + c
     COMP#(8) Comp_1(d, e, g, lt, eq);   // g = d > e
-    MUX2x1#(8) Mux_1(d, e, g[0], z);       // z = g ? d : e
+    MUX2x1#(8) Mux_1(e, d, g[0], z);       // z = g ? d : e
     MUL#(16) Mul_1(a, c, f);            // f = a * c
     SUB#(16) Sub_1(f, d, xwire);        // xwire = f - d
     REG#(16)Reg_1(xwire, x, clk, rst);  // x = xwire
